@@ -2,6 +2,7 @@ package com.algaworks.junit.utilidade;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 
@@ -17,20 +18,25 @@ class SaudacaoUtilTest {
 
   @Test
   public void saudarBomDiaAPartir5h() {
+    //Arrange
     int horaValida = 5;
+    //Act
     String saudacao = SaudacaoUtil.saudar(horaValida);
+    //Assert
     assertEquals("Bom dia", saudacao);
   }
 
   @Test
   public void saudarBoaTarde(){
-    String saudacao = SaudacaoUtil.saudar(13);
+    int horaValida = 13;
+    String saudacao = SaudacaoUtil.saudar(horaValida);
     assertEquals("Boa tarde", saudacao);
   }
 
   @Test
   public void saudarBoaNoite(){
-    String saudacao = SaudacaoUtil.saudar(19);
+    int horaValida = 19;
+    String saudacao = SaudacaoUtil.saudar(horaValida);
     assertEquals("Boa noite", saudacao);
   }
 
@@ -43,13 +49,25 @@ class SaudacaoUtilTest {
 
   @Test
   public void deveLancarException(){
-    IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> SaudacaoUtil.saudar(-10));
+    //Arrange
+    int horaInvalida = -10;
+
+    //Act
+    Executable chamadaDeMetodoInvalida = () -> SaudacaoUtil.saudar(horaInvalida);
+    IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, chamadaDeMetodoInvalida);
+
+    //Assert
     assertEquals("Hora invalida", illegalArgumentException.getMessage());
   }
 
   @Test
   public void naoDeveLancarException(){
-    assertDoesNotThrow(() -> SaudacaoUtil.saudar(0));
+    //Arrange;
+    int horaValida = 0;
+    //Act
+    Executable chamadaValidaDeMetodo = () -> SaudacaoUtil.saudar(horaValida);
+    //Assert
+    assertDoesNotThrow(chamadaValidaDeMetodo);
   }
 
 }
